@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using TellHer.Domain;
 using TellHer.Data;
-using StructureMap;
+
 using TellHer.SubscriptionService.Actions;
 using System.Globalization;
 
 namespace TellHer.SubscriptionService
 {
-    public class SubscriptionService : ISubscriptionService
+    public class SmsCommandProcessor : ICommandProcessor
     {
         Dictionary<string, ClientAction> _actions = new Dictionary<string, ClientAction>
         {
@@ -36,7 +36,7 @@ namespace TellHer.SubscriptionService
 
         ThrottledProcessor<IncomingSmsMessage> _messageProcessor;
 
-        public SubscriptionService()
+        public SmsCommandProcessor()
         {
             _messageProcessor = new ThrottledProcessor<IncomingSmsMessage>(
                 100,

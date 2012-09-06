@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationManager.cs" />
     <Compile Include="IServiceAuthorizationManager.cs" />
     <Compile Include="ITwilioSmsListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

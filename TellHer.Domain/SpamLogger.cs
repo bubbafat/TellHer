@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StructureMap;
+
 
 namespace TellHer.Domain
 {
@@ -21,7 +21,7 @@ namespace TellHer.Domain
         {
             if (DateTime.UtcNow > _next)
             {
-                ObjectFactory.GetInstance<ILogging>().Info(message);
+                LogManager.Log.Info(message);
                 _next = _next.Add(_frequency);
             }
         }

@@ -63,7 +63,7 @@
     <Compile Include="Actions\Unblock.cs" />
     <Compile Include="ClientAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubscriptionService.cs" />
+    <Compile Include="SmsCommandProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TellHer.Data\TellHer.Models.csproj">

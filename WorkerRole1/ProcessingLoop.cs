@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TellHer.Domain;
-using StructureMap;
-using TellHer.Data;
-using System.Threading;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
+using System.Threading;
+
+using TellHer.Data;
+using TellHer.Domain;
+
+using Configuration = TellHer.Domain.Configuration;
+
 
 namespace WorkerRole1
 {
     public class ProcessingLoop
     {
-        IConfiguration _Configuration = ObjectFactory.GetInstance<IConfiguration>();
+        IConfiguration _Configuration = Configuration.GetInstance();
 
         public void Run()
         {
             LogManager.Log.Info("WorkerRole.Run Loop Started");
 
-            using (IOutgoingSmsQueue outgoing = ObjectFactory.GetInstance<IOutgoingSmsQueue>())
+            using (IOutgoingSmsQueue outgoing = OutgoingSmsQueue.GetInstance())
             {
                 outgoing.Send(OutgoingSmsMessage.CreateWithDefaults(_Configuration.AdminNumber,
                     "WorkerRole.Run Loop Started"), 
@@ -31,7 +33,7 @@ namespace WorkerRole1
                     // waiting for the queue to drain ensures we won't pick up the same one twice
                     if (outgoing.Length == 0)
                     {
-                        IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+                        IDataStore store = DataStore.GetInstance();
 
                         ProcessOutgoingMessages(outgoing, store);
                         ProcessSubscriptions(outgoing, store);
@@ -83,7 +85,7 @@ namespace WorkerRole1
 
         void MessageSent(SentSmsMessageLogEntry result, OutgoingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             if (result.Status == (int)MessageSendStatus.Success)
             {
@@ -98,7 +100,7 @@ namespace WorkerRole1
 
         private void ProcessSendFailure(OutgoingSmsMessage msg)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             // reload from the local store
             msg = store.OutgoingMessages.Where(m => m.Id == msg.Id).First();

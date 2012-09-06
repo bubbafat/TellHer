@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TellHer.Domain;
-using StructureMap;
+
 using TellHer.Data;
 using System.Linq;
 using System.Globalization;
@@ -62,7 +62,7 @@ namespace SubscriptionServices.Tests
         [DeploymentItem("TellHer.SubscriptionService.dll")]
         public void Perform_RealAdmin_Help()
         {
-            string destination = ObjectFactory.GetInstance<IConfiguration>().AdminNumber;
+            string destination = Configuration.GetInstance().AdminNumber;
             Add_Accessor target = new Add_Accessor(); // TODO: Initialize to an appropriate value
             IncomingSmsMessage message = new IncomingSmsMessage
             {
@@ -72,7 +72,7 @@ namespace SubscriptionServices.Tests
 
             target.Perform(message);
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             Assert.AreEqual(0, store.DailyIdeas.Count());
             OutgoingMessageExists(destination, SmsResponseStrings.Add_Help());
@@ -93,17 +93,17 @@ namespace SubscriptionServices.Tests
             Add_Accessor target = new Add_Accessor(); // TODO: Initialize to an appropriate value
             IncomingSmsMessage message = new IncomingSmsMessage
             {
-                From = ObjectFactory.GetInstance<IConfiguration>().AdminNumber,
+                From = Configuration.GetInstance().AdminNumber,
                 Message = "add This is the added message",
             };
 
             target.Perform(message);
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             DailyIdea addedIdea = store.DailyIdeas.Where(i => i.Idea == "This is the added message").First();
             OutgoingSmsMessage response = store.OutgoingMessages.Where(o => o.Message ==  SmsResponseStrings.Add_Success_AddedNewIdea(addedIdea.Id)).First();
-            Assert.AreEqual(ObjectFactory.GetInstance<IConfiguration>().AdminNumber, response.Destination);
+            Assert.AreEqual(Configuration.GetInstance().AdminNumber, response.Destination);
         }
 
         [TestMethod()]
@@ -112,7 +112,7 @@ namespace SubscriptionServices.Tests
         {
             Add_Accessor target = new Add_Accessor(); // TODO: Initialize to an appropriate value
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             DailyIdea idea = new DailyIdea
             {
@@ -125,7 +125,7 @@ namespace SubscriptionServices.Tests
 
             IncomingSmsMessage message = new IncomingSmsMessage
             {
-                From = ObjectFactory.GetInstance<IConfiguration>().AdminNumber,
+                From = Configuration.GetInstance().AdminNumber,
                 Message = string.Format(CultureInfo.InvariantCulture, "add {0}", idea.Idea),
             };
 
@@ -133,7 +133,7 @@ namespace SubscriptionServices.Tests
 
             Assert.AreEqual(1, store.DailyIdeas.Count(i => i.Idea == idea.Idea));
             OutgoingSmsMessage response = store.OutgoingMessages.Where(o => o.Message == SmsResponseStrings.Add_Failed_ExistingIdea(idea.Id)).First();
-            Assert.AreEqual(ObjectFactory.GetInstance<IConfiguration>().AdminNumber, response.Destination);
+            Assert.AreEqual(Configuration.GetInstance().AdminNumber, response.Destination);
         }
 
 
@@ -152,7 +152,7 @@ namespace SubscriptionServices.Tests
 
             target.Perform(message);
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             Assert.IsFalse(store.DailyIdeas.Any());
             OutgoingSmsMessage response = store.OutgoingMessages.Where(o => o.Message == SmsResponseStrings.PublicHelp()).First();
@@ -163,7 +163,7 @@ namespace SubscriptionServices.Tests
         [DeploymentItem("TellHer.SubscriptionService.dll")]
         public void Perform_Subscriber()
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             Add_Accessor target = new Add_Accessor(); // TODO: Initialize to an appropriate value
             IncomingSmsMessage message = new IncomingSmsMessage

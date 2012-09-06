@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TellHer.Domain;
-using TellHer.Data;
-using StructureMap;
-using System.Configuration;
 using System.Globalization;
+using System.Linq;
+using TellHer.Data;
+using TellHer.Domain;
 
 namespace TellHer.SubscriptionService
 {
     internal abstract class ClientAction
     {
-        IConfiguration _Configuration = ObjectFactory.GetInstance<IConfiguration>();
+        IConfiguration _Configuration = Configuration.GetInstance();
 
         public abstract string Action
         {
@@ -21,7 +17,7 @@ namespace TellHer.SubscriptionService
 
         protected static void Say(string destination, string message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             OutgoingSmsMessage msg = OutgoingSmsMessage.CreateWithDefaults(destination, message);
             store.Save(msg);
         }
@@ -44,7 +40,7 @@ namespace TellHer.SubscriptionService
                 return;
             }
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             if (store.Subscriptions.Any(s => s.Phone == message.From))
             {
                 PerformSubscriber(message);

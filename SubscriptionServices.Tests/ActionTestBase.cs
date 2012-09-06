@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TellHer.Domain;
 using TellHer.Test.Common;
+
+using StructureMap;
 
 namespace SubscriptionServices.Tests
 {
@@ -25,7 +27,7 @@ namespace SubscriptionServices.Tests
 
             TestDataStore.Reset();
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             store.Save(new Subscription
             {
                 Next = DateTime.UtcNow,
@@ -51,13 +53,13 @@ namespace SubscriptionServices.Tests
 
         protected IList<Subscription> SubscriptionForNumber(string phone)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             return store.Subscriptions.Where(s => s.Phone == phone).ToList();
         }
 
         protected void OutgoingMessageExists(string phone, string message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             Assert.AreEqual(1, store.OutgoingMessages.Count(m => m.Destination == phone && m.Message == message));
         }
     }

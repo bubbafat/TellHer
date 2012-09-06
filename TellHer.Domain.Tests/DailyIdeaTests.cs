@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StructureMap;
+
 using TellHer.Data;
 using TellHer.Test.Common;
+using StructureMap;
 
 namespace TellHer.Domain.Tests
 {
@@ -28,7 +29,7 @@ namespace TellHer.Domain.Tests
         [TestMethod]
         public void DailyIdea_ScheduledDates()
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             for (int i = 0; i < 5; i++)
             {
@@ -85,7 +86,7 @@ namespace TellHer.Domain.Tests
         [TestMethod]
         public void DailyIdea_DoesNotRepeat()
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             
             for(int i = 0; i < 5; i++)
             {

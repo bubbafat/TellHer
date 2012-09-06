@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Domain;
-using StructureMap;
+
 using TellHer.Data;
 
 namespace TellHer.Sms
 {
-    public class SmsSender : IOutgoingSmsQueue
+    public class SmsSenderQueue : IOutgoingSmsQueue
     {
-        ISmsTransport _transport = ObjectFactory.GetInstance<ISmsTransport>();
-        IDataStore _store = ObjectFactory.GetInstance<IDataStore>();
+        ISmsTransport _transport = SmsTransport.GetInstance();
+        IDataStore _store = DataStore.GetInstance();
         ThrottledProcessor<SmsSenderMessage> _processor;
         int _delay = 0;
 
         private readonly HashSet<int> queued = new HashSet<int>();
         private readonly object _lock = new object();
 
-        public SmsSender()
+        public SmsSenderQueue()
         {
-            _delay = ObjectFactory.GetInstance<ISmsTransport>().DelayMs;
+            _delay = _transport.DelayMs;
 
             _processor = new ThrottledProcessor<SmsSenderMessage>(
                 _delay, 

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TellHer.Domain;
-using StructureMap;
+
 using TellHer.Data;
 using System.Linq;
 
@@ -81,7 +81,7 @@ namespace SubscriptionServices.Tests
             target.Perform(message);
 
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             OutgoingMessageExists(message.From, SmsResponseStrings.Quit_AllRemoved(message.From));
         }
@@ -112,7 +112,7 @@ namespace SubscriptionServices.Tests
         {
             Quit_Accessor target = new Quit_Accessor(); // TODO: Initialize to an appropriate value
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             // add an existing outgoing message - this should be removed when the quit is done
             store.Save(new OutgoingSmsMessage

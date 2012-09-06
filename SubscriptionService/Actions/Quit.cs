@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 using TellHer.Domain;
 
 namespace TellHer.SubscriptionService.Actions
@@ -37,7 +37,7 @@ namespace TellHer.SubscriptionService.Actions
 
         private static void DoQuit(Domain.IncomingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             store.RemoveAllForPhone(message.From);
 
             Say(message.From, SmsResponseStrings.Quit_AllRemoved(message.From));

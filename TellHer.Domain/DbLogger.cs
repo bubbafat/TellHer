@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 using System.Globalization;
 
 namespace TellHer.Domain
 {
     public class DatabaseLogger : ILogging
     {
-        IDataStore _db = ObjectFactory.GetInstance<IDataStore>();
+        IDataStore _db = DataStore.GetInstance();
 
         public void Trace(string message)
         {

@@ -7,7 +7,7 @@ using TellHer.Domain;
 using System.Collections.Specialized;
 using System.IO;
 using System.Web;
-using StructureMap;
+
 using System.ServiceModel.Web;
 using TellHer.Sms;
 
@@ -15,7 +15,7 @@ namespace TellHer.Service
 {
     public class TwilioServiceAuthorizationManager : IServiceAuthorizationManager
     {
-        IConfiguration _config = ObjectFactory.GetInstance<IConfiguration>();
+        IConfiguration _config = Configuration.GetInstance();
 
         public bool CheckAccess(OperationContext operationContext, ref System.ServiceModel.Channels.Message message)
         {
@@ -38,7 +38,7 @@ namespace TellHer.Service
             message = copy.CreateMessage();
             copy.Close();
 
-            ITwilioRequestValidator req = ObjectFactory.GetInstance<ITwilioRequestValidator>();
+            ITwilioRequestValidator req = RequestValidator.GetInstance();
 
             if (WebOperationContext.Current.IncomingRequest.UriTemplateMatch == null)
             {

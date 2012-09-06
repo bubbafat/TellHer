@@ -12,7 +12,7 @@ using TellHer.Service;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using TellHer.Domain;
-using StructureMap;
+
 using TellHer.Sms;
 using TellHer.Data;
 using TellHer.SubscriptionService;
@@ -23,6 +23,7 @@ using RestSharp.Contrib;
 using System.Collections.Specialized;
 using System.Security.Cryptography;
 using System.Globalization;
+using StructureMap;
 
 namespace WorkerRole1
 {
@@ -33,8 +34,8 @@ namespace WorkerRole1
             ObjectFactory.Initialize(x =>
             {
                 x.For<ILogging>().Use<DatabaseLogger>();
-                x.For<IOutgoingSmsQueue>().Use<SmsSender>();
-                x.For<ISubscriptionService>().Use<SubscriptionService>();
+                x.For<IOutgoingSmsQueue>().Use<SmsSenderQueue>();
+                x.For<ICommandProcessor>().Use<SmsCommandProcessor>();
                 x.For<ITwilioSmsListener>().Use<TwilioSmsListener>();
                 x.For<ITwilioRequestValidator>().Use<TwilioRequestValidator>();
                 x.For<IServiceAuthorizationManager>().Use<TwilioServiceAuthorizationManager>();
@@ -84,9 +85,9 @@ namespace WorkerRole1
             {
                 LogManager.Log.Error("Exception configuring WCF Services", ex);
 
-                using (IOutgoingSmsQueue outgoing = ObjectFactory.GetInstance<IOutgoingSmsQueue>())
+                using (IOutgoingSmsQueue outgoing = OutgoingSmsQueue.GetInstance())
                 {
-                    IConfiguration config = ObjectFactory.GetInstance<IConfiguration>();
+                    IConfiguration config = Configuration.GetInstance();
                     outgoing.Send(OutgoingSmsMessage.CreateWithDefaults(config.AdminNumber,
                         "WCF STARTUP ERROR: " + ex.GetType().FullName),
                         null,

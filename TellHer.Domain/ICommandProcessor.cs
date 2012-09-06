@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TellHer.Domain
 {
-    public interface ISubscriptionService
+    public interface ICommandProcessor
     {
         void Add(IncomingSmsMessage message);
     }

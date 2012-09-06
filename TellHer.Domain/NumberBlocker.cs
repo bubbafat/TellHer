@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 
 namespace TellHer.Domain
 {
@@ -11,13 +11,13 @@ namespace TellHer.Domain
     {
         public static bool IsBlocked(string number)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             return store.BlockedNumbers.Any(bn => bn.Phone == number && bn.Expires > DateTime.UtcNow);
         }
 
         public static void Block(string number, int days)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             BlockedNumber bn = new BlockedNumber
             {
@@ -42,7 +42,7 @@ namespace TellHer.Domain
 
         public static void Unblock(string number)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             IList<BlockedNumber> blocks = store.BlockedNumbers.Where(bn => bn.Phone == number).ToList();
             store.Remove(blocks);
 

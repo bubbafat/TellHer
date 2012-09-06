@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 using TellHer.Domain;
 
 namespace TellHer.SubscriptionService.Actions
@@ -22,8 +22,8 @@ namespace TellHer.SubscriptionService.Actions
 
         protected override void PerformUnknownUser(Domain.IncomingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
-            IConfiguration config = ObjectFactory.GetInstance<IConfiguration>();
+            IDataStore store = DataStore.GetInstance();
+            IConfiguration config = Configuration.GetInstance();
 
             if (store.Subscriptions.Count() < config.BetaLimit)
             {
@@ -51,7 +51,7 @@ namespace TellHer.SubscriptionService.Actions
 
         protected override void PerformAdmin(Domain.IncomingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
             if (!store.Subscriptions.Any(s => s.Phone == message.From))
             {
                 PerformUnknownUser(message);

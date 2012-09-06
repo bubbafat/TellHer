@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using TellHer.Domain;
-using System.Configuration;
-using System.Security.Cryptography;
-using StructureMap;
-using System.Collections;
+using Configuration = TellHer.Domain.Configuration;
 
 namespace TellHer.Sms
 {
     public class TwilioRequestValidator : ITwilioRequestValidator
     {
-        IConfiguration _Configuration = ObjectFactory.GetInstance<IConfiguration>();
+        IConfiguration _Configuration = Configuration.GetInstance();
 
         public bool IsValid(string pathAndQueryString, string expectedSignature, System.Collections.Specialized.NameValueCollection post)
         {

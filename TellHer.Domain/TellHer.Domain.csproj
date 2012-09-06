@@ -47,17 +47,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandProcessor.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="DbLogger.cs" />
     <Compile Include="IConfiguration.cs" />
     <Compile Include="ILogging.cs" />
     <Compile Include="IncomingSmsMessage.cs" />
     <Compile Include="IOutgoingSmsQueue.cs" />
-    <Compile Include="ISmsSender.cs" />
-    <Compile Include="ISubscriptionService.cs" />
+    <Compile Include="ISmsTransport.cs" />
+    <Compile Include="ICommandProcessor.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="NumberBlocker.cs" />
+    <Compile Include="OutgoingSmsQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseStrings.cs" />
+    <Compile Include="SmsTransport.cs" />
     <Compile Include="SpamLogger.cs" />
     <Compile Include="ThrottledProcessor.cs" />
     <Compile Include="TraceLogger.cs" />

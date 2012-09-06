@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Domain;
-using StructureMap;
+
 
 namespace TellHer.SubscriptionService.Actions
 {
@@ -31,7 +31,7 @@ namespace TellHer.SubscriptionService.Actions
 
         private void SaveSuggestion(Domain.IncomingSmsMessage message)
         {
-            Say(ObjectFactory.GetInstance<IConfiguration>().AdminNumber,
+            Say(Configuration.GetInstance().AdminNumber,
                 string.Format("sug: {0}", message.Message));
             Say(message.From, "Thanks for the feedback!  You can also contact me as @tellhernow on Twitter");
         }

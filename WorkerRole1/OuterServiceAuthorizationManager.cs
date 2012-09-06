@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using TellHer.Service;
 using System.ServiceModel;
-using StructureMap;
+
 
 namespace WorkerRole1
 {
@@ -14,7 +14,7 @@ namespace WorkerRole1
 
         public OuterServiceAuthorizationManager()
         {
-            _manager = ObjectFactory.GetInstance<IServiceAuthorizationManager>();
+            _manager = AuthorizationManager.GetInstance();
         }
 
         public override bool CheckAccess(OperationContext operationContext, ref System.ServiceModel.Channels.Message message)

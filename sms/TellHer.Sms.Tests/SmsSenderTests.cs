@@ -5,10 +5,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TellHer.Data;
 using System.Threading;
-using StructureMap;
+
 using TellHer.Domain;
 using TellHer.Test.Common;
 using System.Globalization;
+using StructureMap;
 
 namespace TellHer.Sms.Tests
 {
@@ -50,7 +51,7 @@ namespace TellHer.Sms.Tests
                     Assert.Fail(string.Format(CultureInfo.InvariantCulture, "Sending message {0} failed?", message.Id));
                 };
 
-            SmsSender sender = new SmsSender();
+            SmsSenderQueue sender = new SmsSenderQueue();
 
             for (int i = 0; i < 10; i++)
             {
@@ -102,7 +103,7 @@ namespace TellHer.Sms.Tests
                 Assert.Fail("The exception callback should not have been called");
             };
 
-            SmsSender sender = new SmsSender();
+            SmsSenderQueue sender = new SmsSenderQueue();
 
             for (int i = 0; i < 10; i++)
             {

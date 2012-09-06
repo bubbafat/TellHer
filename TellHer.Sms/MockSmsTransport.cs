@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Domain;
-using StructureMap;
+
 using TellHer.Data;
 
 namespace TellHer.Sms
@@ -12,7 +12,7 @@ namespace TellHer.Sms
     {
         public SentSmsMessageLogEntry Send(string phoneNumber, string message)
         {
-            ObjectFactory.GetInstance<ILogging>().Trace("SMS Mock to {0} \"{1}\"", phoneNumber, message);
+            LogManager.Log.Trace("SMS Mock to {0} \"{1}\"", phoneNumber, message);
 
             return new SentSmsMessageLogEntry
             {

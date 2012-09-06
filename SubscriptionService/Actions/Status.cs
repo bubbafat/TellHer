@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 
 namespace TellHer.SubscriptionService.Actions
 {
@@ -21,7 +21,7 @@ namespace TellHer.SubscriptionService.Actions
 
         protected override void PerformAdmin(Domain.IncomingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             DateTime fromWhen = DateTime.UtcNow.AddDays(-1);
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 using TellHer.Domain;
 
 namespace TellHer.SubscriptionService.Actions
@@ -42,7 +42,7 @@ namespace TellHer.SubscriptionService.Actions
 
         private void SayLastError(Domain.IncomingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             LogItem lastError = store.LogItems.Where(l => l.Exception != null).OrderByDescending(l => l.Date).FirstOrDefault();
             if (lastError != null)
@@ -97,7 +97,7 @@ namespace TellHer.SubscriptionService.Actions
 
         private void SayLostLog(Domain.IncomingSmsMessage message)
         {
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore store = DataStore.GetInstance();
 
             LogItem lastLog = store.LogItems.OrderByDescending(l => l.Date).FirstOrDefault();
             if (lastLog != null)

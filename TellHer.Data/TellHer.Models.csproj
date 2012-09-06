@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BlockedNumbers.cs" />
     <Compile Include="DailyIdea.cs" />
+    <Compile Include="DataStore.cs" />
     <Compile Include="DataStoreInitialize.cs" />
     <Compile Include="IDataStore.cs" />
     <Compile Include="IncomingMessageLog.cs" />

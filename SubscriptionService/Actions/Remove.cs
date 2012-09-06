@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 
 namespace TellHer.SubscriptionService.Actions
 {
@@ -24,7 +24,7 @@ namespace TellHer.SubscriptionService.Actions
             int id;
             if (TryCrackId(message.Message, out id))
             {
-                IDataStore store = ObjectFactory.GetInstance<IDataStore>();
+                IDataStore store = DataStore.GetInstance();
                 DailyIdea lookup = store.DailyIdeas.Where(l => l.Id == id).FirstOrDefault();
 
                 if (lookup != null)

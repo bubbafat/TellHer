@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StructureMap;
+
 
 namespace TellHer.Data
 {
@@ -21,7 +21,7 @@ namespace TellHer.Data
                 return _todaysCachedIdea;
             }
 
-            IDataStore db = ObjectFactory.GetInstance<IDataStore>();
+            IDataStore db = DataStore.GetInstance();
 
             // is there one scheduled for today?
             DateTime todayDate = today.Date;

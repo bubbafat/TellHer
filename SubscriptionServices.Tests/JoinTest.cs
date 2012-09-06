@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TellHer.Domain;
-using StructureMap;
+
 using TellHer.Data;
 using System.Linq;
 using System.Globalization;
@@ -108,8 +108,8 @@ namespace SubscriptionServices.Tests
         {
             Join_Accessor target = new Join_Accessor(); // TODO: Initialize to an appropriate value
 
-            IDataStore store = ObjectFactory.GetInstance<IDataStore>();
-            IConfiguration config = ObjectFactory.GetInstance<IConfiguration>();
+            IDataStore store = DataStore.GetInstance();
+            IConfiguration config = Configuration.GetInstance();
 
             int count = 0;
 

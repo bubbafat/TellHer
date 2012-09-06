@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TellHer.Data;
-using StructureMap;
+
 using TellHer.Domain;
 
 namespace TellHer.SubscriptionService.Actions

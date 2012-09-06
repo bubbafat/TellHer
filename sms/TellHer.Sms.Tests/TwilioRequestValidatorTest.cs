@@ -2,8 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Specialized;
-using StructureMap;
+
 using TellHer.Test.Common;
+using StructureMap;
 
 namespace TellHer.Sms.Tests
 {

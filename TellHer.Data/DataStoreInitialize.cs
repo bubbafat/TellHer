@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StructureMap;
 
+
 namespace TellHer.Data
 {
     public static class DataStoreInitialize

@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
 using StructureMap;
 
+
 namespace TellHer.Domain.Tests
 {
     [TestClass]

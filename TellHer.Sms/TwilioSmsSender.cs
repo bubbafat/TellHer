@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Twilio;
 using System.Configuration;
-using TellHer.Domain;
-using StructureMap;
-using TellHer.Data;
 using System.Globalization;
+using TellHer.Data;
+using TellHer.Domain;
+using Twilio;
+using Configuration = TellHer.Domain.Configuration;
 
 namespace TellHer.Sms
 {
     public class TwilioSmsSender : ISmsTransport
     {
-        IConfiguration _Configuration = ObjectFactory.GetInstance<IConfiguration>();
+        IConfiguration _Configuration = Configuration.GetInstance();
         TwilioRestClient _client;
         readonly object _lock = new object();
 

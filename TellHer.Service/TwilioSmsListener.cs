@@ -1,28 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
-using System.ServiceModel.Web;
-using System.IO;
-using System.Web;
 using System.Collections.Specialized;
-using System.Security;
 using System.Configuration;
-using StructureMap;
-using TellHer.Domain;
-using System.Web.Util;
+using System.IO;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Web;
+
 using TellHer.Data;
-using System.ServiceModel.Activation;
-using System.ServiceModel.Channels;
+using TellHer.Domain;
+using Configuration = TellHer.Domain.Configuration;
 
 namespace TellHer.Service
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class TwilioSmsListener : ITwilioSmsListener
     {
-        IConfiguration _Configuration = ObjectFactory.GetInstance<IConfiguration>();
+        IConfiguration _Configuration = Configuration.GetInstance();
 
         public void Incoming(Stream input)
         {
@@ -44,7 +37,7 @@ namespace TellHer.Service
                 Message = body,
             };
 
-            ObjectFactory.GetInstance<IDataStore>().Add(incomingLog);
+            DataStore.GetInstance().Add(incomingLog);
 
             LogManager.Log.Trace("SMS RECV: {0} {1}", from, body);
 
@@ -60,7 +53,7 @@ namespace TellHer.Service
             }
             else
             {
-                ISubscriptionService handler = ObjectFactory.GetInstance<ISubscriptionService>();
+                ICommandProcessor handler = CommandProcessor.GetInstance();
                 handler.Add(new IncomingSmsMessage { From = from, Message = body });
                 context.StatusCode = System.Net.HttpStatusCode.OK;
             }
